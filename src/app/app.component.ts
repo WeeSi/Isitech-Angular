@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SupabaseService } from 'src/services/supabase.service';
+import { SupabaseService } from '../services/supabase.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { SupabaseService } from 'src/services/supabase.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'angular-user-management';
+  title = 'supabase-angular';
 
   session = this.supabase.session;
 

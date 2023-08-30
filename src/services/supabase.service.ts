@@ -3,10 +3,12 @@ import {
   AuthChangeEvent,
   AuthSession,
   createClient,
+  PostgrestSingleResponse,
   Session,
   SupabaseClient,
   User,
 } from '@supabase/supabase-js';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 export interface Profile {
@@ -14,6 +16,12 @@ export interface Profile {
   username: string;
   website: string;
   avatar_url: string;
+}
+
+export interface Item {
+  id: number;
+  name: string;
+  created_at: string;
 }
 
 @Injectable({
@@ -74,5 +82,28 @@ export class SupabaseService {
 
   uploadAvatar(filePath: string, file: File) {
     return this.supabase.storage.from('avatars').upload(filePath, file);
+  }
+
+  getItems() {
+    return this.supabase.from('items').select(`id, name, created_at`);
+  }
+
+  createItem(name: string): Observable<PostgrestSingleResponse<Item>> {
+    return new Observable<PostgrestSingleResponse<Item>>((observer) => {
+      this.supabase
+        .from('items')
+        .insert({ name })
+        .select(`id, name, created_at`)
+        .single()
+        .then(
+          (response) => {
+            observer.next(response);
+            observer.complete();
+          },
+          (error) => {
+            observer.error(error);
+          }
+        );
+    });
   }
 }

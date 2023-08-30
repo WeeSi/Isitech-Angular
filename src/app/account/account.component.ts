@@ -11,8 +11,6 @@ import { SupabaseService, Profile } from 'src/services/supabase.service';
 export class AccountComponent implements OnInit {
   loading = false;
   profile!: Profile;
-
-  @Input()
   session!: AuthSession;
 
   updateProfileForm = this.formBuilder.group({
@@ -51,7 +49,8 @@ export class AccountComponent implements OnInit {
   async getProfile() {
     try {
       this.loading = true;
-      const { user } = this.session;
+      const user = this.supabase.session?.user;
+      if (!user) throw 'error';
       let { data: profile, error, status } = await this.supabase.profile(user);
 
       if (error && status !== 406) {
@@ -73,7 +72,9 @@ export class AccountComponent implements OnInit {
   async updateProfile(): Promise<void> {
     try {
       this.loading = true;
-      const { user } = this.session;
+      const user = this.supabase.session?.user;
+
+      if (!user) throw 'error';
 
       const username = this.updateProfileForm.value.username as string;
       const website = this.updateProfileForm.value.website as string;

@@ -6,9 +6,6 @@
   <div>
     <app-avatar [avatarUrl]="this.avatarUrl" (upload)="updateAvatar($event)">
     </app-avatar>
-
-    <label for="email">Email</label>
-    <input id="email" type="text" [value]="session.user.email" disabled />
   </div>
   <div>
     <label for="username">Name</label>

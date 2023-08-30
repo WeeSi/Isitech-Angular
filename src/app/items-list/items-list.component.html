@@ -1,0 +1,18 @@
+<div>
+  <button (click)="add()">Nouveau</button>
+  <div *ngIf="canAdd">
+    <form [formGroup]="myForm" (ngSubmit)="saveValue()">
+      <input type="text" formControlName="inputValue" />
+
+      <button type="button" (click)="cancel()">Annuler</button>
+      <button type="submit">Sauvegarder</button>
+    </form>
+  </div>
+  <li *ngFor="let item of items">
+    <span>{{ item.id }} </span>
+    <span>{{ item.name }} </span>
+    <span>{{
+      item.created_at | CustomDatePipe : 28 | date : "yyyy-MM-dd"
+    }}</span>
+  </li>
+</div>
